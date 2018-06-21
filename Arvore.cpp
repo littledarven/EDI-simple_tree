@@ -71,16 +71,14 @@ void deleteOneNode()
 		auxiliar = auxiliar->left;
 		if(delete_Element->number > auxiliar->number)
 		{
-			auxiliar->right = delete_Element->right;
 			auxiliar->up = delete_Element->up;
 			delete_Element->up->left = delete_Element->left;
 			free(delete_Element);
 		}
 		else
 		{
-			auxiliar->left = delete_Element->left;
 			auxiliar->up = delete_Element->up;
-			delete_Element->up->right = delete_Element->right;
+			delete_Element->up->right = delete_Element->left;
 			free(delete_Element);
 		}
 	}
@@ -89,16 +87,14 @@ void deleteOneNode()
 		auxiliar = auxiliar->right;
 		if(delete_Element->number > auxiliar->number)
 		{
-			auxiliar->right = delete_Element->right;
 			auxiliar->up = delete_Element->up;
-			delete_Element->up->right = delete_Element->right;
+			delete_Element->up->left = delete_Element->right;
 			free(delete_Element);
 		}
 		else
 		{
-			auxiliar->left = delete_Element->left;
 			auxiliar->up = delete_Element->up;
-			delete_Element->up->left = delete_Element->left;
+			delete_Element->up->right = delete_Element->right;
 			free(delete_Element);
 		}
 	}
