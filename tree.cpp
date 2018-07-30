@@ -1,35 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//		//PRIMEIRO ELEMENTO INSERIDO A ESQUERDA DO NÓ RAIZ
-//		new_Element->number = number;
-//		first->left = new_Element;
-//		new_Element->up = first;
-//		new_Element->right = NULL;
-//		new_Element->left = NULL;
-//		last_Left = new_Element;
-//
-//		//PRIMEIRO ELEMENTO INSERIDO A DIREITA DO NÓ RAIZ
-//		new_Element->number = number;
-//		first->right = new_Element;
-//		new_Element->up = first;
-//		new_Element->right = NULL;
-//		new_Element->left = NULL;
-//		last_Right = new_Element;
-//		//
-//		new_Element->number = first;
-//		last_Right->left = new_Element;
-//		new_Element->up = last_Right;
-//		new_Element->left = NULL;
-//		new_Element->right = NULL;
-//		last_Right = new_Element;
-//		//
-//		new_Element->number = first;
-//		last_Right->right = new_Element;
-//		new_Element->up = last_Right;
-//		new_Element->left = NULL;
-//		new_Element->right = NULL;
-//		last_Right = new_Element;
-//
 struct Number
 {
 	struct Number *up;
@@ -39,11 +9,76 @@ struct Number
 };
 
 struct Number *first = NULL;
-struct Number *last;
 struct Number *auxiliar;
 struct Number *delete_Element;
 int num_Numbers = 0;
-
+int preVector[50];
+int i = 0;
+bool rightRunChecker;
+//void deepChecker()
+//{
+//	while()
+//	{
+//		
+//	}
+//}
+void runStraightLeft()
+{
+	while(auxiliar->left != NULL)
+	{
+		auxiliar = auxiliar->left;
+		preVector[i] = auxiliar->number;
+		i++;
+	}
+}
+//void runStraightRight()
+//{
+//	while(auxiliar->right != NULL)
+//	{
+//		auxiliar = auxiliar->right;
+//		preVector[i] = auxiliar->number;
+//		i++;
+//	}
+//}
+//void runLeft()
+//{
+//	runStraightLeft();
+//	while(auxiliar->right != NULL)
+//	{
+//		if(auxiliar->left != NULL)
+//		{
+//			runStraightLeft();	
+//		}
+//		runStraightRight();
+//		auxiliar = auxiliar->right;
+//	}
+//	auxiliar = auxiliar->up;
+//}
+//void runRight()
+//{
+//	auxiliar = first;
+//	while(auxiliar->right != NULL)
+//	{
+//		preVector[i] = auxiliar->number;
+//		auxiliar = auxiliar->right;
+//		i++;
+//	}
+//	while(auxiliar->up != NULL)
+//	{
+//		while(auxiliar->left != NULL)
+//		{
+//			auxiliar = auxiliar->left;
+//			preVector[i] = auxiliar->number;
+//			i++;
+//		}
+//		auxiliar = auxiliar->up;
+//	}
+//}
+void preOrder()
+{
+	runStraighLeft();
+	runStraightRight();
+}
 void clear()
 {
 	system("pause");
@@ -98,10 +133,11 @@ void deleteOneNode()
 			free(delete_Element);
 		}
 	}
-
 }
+
 void deleteDoubleNode()
-{	delete_Element = auxiliar->left;
+{	
+	delete_Element = auxiliar->left;
 	while(delete_Element->right!=NULL)
 	{
 		delete_Element = delete_Element->right;
@@ -120,7 +156,6 @@ void deleteDoubleNode()
 	else if(delete_Element->up != auxiliar && delete_Element->left == NULL)
 	{
 		delete_Element->up->right = NULL;
-		
 	}
 	else
 	{
@@ -128,7 +163,6 @@ void deleteDoubleNode()
 	}
 	free(delete_Element);
 }
-
 void show()
 {
 	int option;
@@ -271,9 +305,10 @@ int main()
 	int option;
 	while(7)
 	{
-		printf("1  - INSERIR VALOR \n");
-		printf("2  - NAVEGAR NA ARVORE \n");
-		printf("3+ - SAIR\n");
+		printf("1 - INSERIR VALOR \n");
+		printf("2 - NAVEGAR NA ARVORE \n");
+		printf("3 - PRE-ORDER\n");
+		printf("4 - SAIR\n");
 		printf("Escolha uma opçao: ");
 		scanf("%d", &option);
 		if(option == 1)
@@ -297,6 +332,15 @@ int main()
 				clear();					
 			}
 
+		}
+		else if(option==3)
+		{
+			preOrder();
+			for(i=0;i<50;i++)
+			{
+			
+				printf("%d\t",preVector[i]);
+			}
 		}
 		else
 		{
