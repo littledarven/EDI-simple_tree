@@ -31,29 +31,39 @@ void runStraightLeft()
 		i++;
 	}
 }
-//void runStraightRight()
-//{
-//	while(auxiliar->right != NULL)
-//	{
-//		auxiliar = auxiliar->right;
-//		preVector[i] = auxiliar->number;
-//		i++;
-//	}
-//}
-//void runLeft()
-//{
-//	runStraightLeft();
-//	while(auxiliar->right != NULL)
-//	{
-//		if(auxiliar->left != NULL)
-//		{
-//			runStraightLeft();	
-//		}
-//		runStraightRight();
-//		auxiliar = auxiliar->right;
-//	}
-//	auxiliar = auxiliar->up;
-//}
+void runStraightRight()
+{
+	while(auxiliar->right != NULL)
+	{
+		auxiliar = auxiliar->right;
+		preVector[i] = auxiliar->number;
+		i++;
+		if(auxiliar->left!=NULL)
+		{
+			runStraightLeft();
+		}
+	}
+}
+void runLeft()
+{
+	auxiliar = first;
+	struct Number *aux;
+	
+	
+	runStraightLeft();
+	for(;;)
+	{
+		if(auxiliar->right!=NULL)
+		{
+			runStraightRight();
+		}
+		if(auxiliar->up==NULL)
+		{
+			break;
+		}
+	}
+	
+}
 //void runRight()
 //{
 //	auxiliar = first;
@@ -74,11 +84,6 @@ void runStraightLeft()
 //		auxiliar = auxiliar->up;
 //	}
 //}
-void preOrder()
-{
-	runStraighLeft();
-	runStraightRight();
-}
 void clear()
 {
 	system("pause");
@@ -309,7 +314,7 @@ int main()
 		printf("2 - NAVEGAR NA ARVORE \n");
 		printf("3 - PRE-ORDER\n");
 		printf("4 - SAIR\n");
-		printf("Escolha uma opçao: ");
+		printf("Escolha uma opcao: ");
 		scanf("%d", &option);
 		if(option == 1)
 		{
@@ -335,12 +340,17 @@ int main()
 		}
 		else if(option==3)
 		{
-			preOrder();
+			runLeft();
 			for(i=0;i<50;i++)
 			{
-			
-				printf("%d\t",preVector[i]);
+				if(preVector[i]!=0)
+				{
+					printf("%d\t",preVector[i]);	
+				}
+				
 			}
+			printf("\n\n\n");
+			
 		}
 		else
 		{
