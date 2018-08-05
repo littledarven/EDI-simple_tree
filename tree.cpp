@@ -1,49 +1,82 @@
 #include <stdio.h>
 #include <stdlib.h>
-//		//PRIMEIRO ELEMENTO INSERIDO A ESQUERDA DO NÓ RAIZ
-//		new_Element->number = number;
-//		first->left = new_Element;
-//		new_Element->up = first;
-//		new_Element->right = NULL;
-//		new_Element->left = NULL;
-//		last_Left = new_Element;
-//
-//		//PRIMEIRO ELEMENTO INSERIDO A DIREITA DO NÓ RAIZ
-//		new_Element->number = number;
-//		first->right = new_Element;
-//		new_Element->up = first;
-//		new_Element->right = NULL;
-//		new_Element->left = NULL;
-//		last_Right = new_Element;
-//		//
-//		new_Element->number = first;
-//		last_Right->left = new_Element;
-//		new_Element->up = last_Right;
-//		new_Element->left = NULL;
-//		new_Element->right = NULL;
-//		last_Right = new_Element;
-//		//
-//		new_Element->number = first;
-//		last_Right->right = new_Element;
-//		new_Element->up = last_Right;
-//		new_Element->left = NULL;
-//		new_Element->right = NULL;
-//		last_Right = new_Element;
-//
 struct Number
 {
 	struct Number *up;
 	struct Number *left;
 	struct Number *right;
+	bool isLeftVerified;
+	bool isRightVerified;
 	int number;
 };
-
 struct Number *first = NULL;
-struct Number *last;
 struct Number *auxiliar;
 struct Number *delete_Element;
 int num_Numbers = 0;
+int preVector[50];
+int i = 0;
+int depth;
+int teste;
+void runStraightLeft()
 
+{
+	while(auxiliar->left != NULL)
+	{
+		auxiliar = auxiliar->left;
+		preVector[i] = auxiliar->number;
+		auxiliar->isLeftVerified = true;
+		i++;
+		depth++;
+	}
+}
+void runRight()
+{
+	
+	while(auxiliar->right != NULL)
+	{
+		auxiliar = auxiliar->right;
+		preVector[i] = auxiliar->number;
+		i++;
+		if(auxiliar->left!=NULL)
+		{
+			runStraightLeft();
+		}
+		else
+		{
+			auxiliar->isRightVerified = true;
+		}
+		depth++;
+	}
+}
+void preOrder()
+{
+	auxiliar = first;
+	preVector[i] = auxiliar->number;
+	i++;
+	runStraightLeft();
+	while(auxiliar->up!=NULL)
+	{
+		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
+		{
+			depth++;
+			auxiliar->isRightVerified = true;
+			runRight();
+		}
+		auxiliar = auxiliar->up;
+		depth--;
+		if(auxiliar->up==NULL && auxiliar->isRightVerified==false)
+		{
+			auxiliar->isRightVerified = true;
+			depth = 0;
+			runRight();
+		}
+		if(depth>teste)
+		{
+			teste = depth;
+		}
+		
+	}
+}
 void clear()
 {
 	system("pause");
@@ -98,10 +131,11 @@ void deleteOneNode()
 			free(delete_Element);
 		}
 	}
-
 }
+
 void deleteDoubleNode()
-{	delete_Element = auxiliar->left;
+{	
+	delete_Element = auxiliar->left;
 	while(delete_Element->right!=NULL)
 	{
 		delete_Element = delete_Element->right;
@@ -120,7 +154,6 @@ void deleteDoubleNode()
 	else if(delete_Element->up != auxiliar && delete_Element->left == NULL)
 	{
 		delete_Element->up->right = NULL;
-		
 	}
 	else
 	{
@@ -128,7 +161,6 @@ void deleteDoubleNode()
 	}
 	free(delete_Element);
 }
-
 void show()
 {
 	int option;
@@ -213,13 +245,14 @@ void insert(int number)
 		new_Element->up = NULL;
 		new_Element->left = NULL;
 		new_Element->right = NULL;
+		new_Element->isLeftVerified = false;
+		new_Element->isRightVerified = false;
 		first = new_Element;
 	}
 	else
 	{
 		new_Element->number = number;
 		auxiliar = first;
-
 		while(7)
 		{
 			if(new_Element->number > auxiliar->number)
@@ -229,7 +262,10 @@ void insert(int number)
 					new_Element->up = auxiliar;
 					new_Element->right = NULL;
 					new_Element->left = NULL;
+					new_Element->isLeftVerified = false;
+					new_Element->isRightVerified = false;
 					auxiliar->right = new_Element;
+					
 
 					break;
 				}
@@ -245,6 +281,8 @@ void insert(int number)
 					new_Element->up = auxiliar;
 					new_Element->right = NULL;
 					new_Element->left = NULL;
+					new_Element->isLeftVerified = false;
+					new_Element->isRightVerified = false;
 					auxiliar->left = new_Element;
 
 					break;
@@ -271,10 +309,11 @@ int main()
 	int option;
 	while(7)
 	{
-		printf("1  - INSERIR VALOR \n");
-		printf("2  - NAVEGAR NA ARVORE \n");
-		printf("3+ - SAIR\n");
-		printf("Escolha uma opçao: ");
+		printf("1 - INSERIR VALOR \n");
+		printf("2 - NAVEGAR NA ARVORE \n");
+		printf("3 - PRE-ORDER\n");
+		printf("4 - SAIR\n");
+		printf("Escolha uma opcao: ");
 		scanf("%d", &option);
 		if(option == 1)
 		{
@@ -297,6 +336,19 @@ int main()
 				clear();					
 			}
 
+		}
+		else if(option==3)
+		{
+			preOrder();
+			for(i=0;i<50;i++)
+			{
+				if(preVector[i]!=0)
+				{
+					printf("%d\t",preVector[i]);	
+				}
+			}
+			printf("\n\n\n %d \n\n\n",teste);
+			
 		}
 		else
 		{
