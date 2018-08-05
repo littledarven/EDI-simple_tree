@@ -15,15 +15,28 @@ struct Number *delete_Element;
 int num_Numbers = 0;
 int preVector[50];
 int i = 0;
+<<<<<<< HEAD
 int depth;
 int teste;
 void runStraightLeft()
 
+=======
+bool rightRunChecker;
+//void deepChecker()
+//{
+//	while()
+//	{
+//		
+//	}
+//}
+void runStraightLeft()
+>>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 {
 	while(auxiliar->left != NULL)
 	{
 		auxiliar = auxiliar->left;
 		preVector[i] = auxiliar->number;
+<<<<<<< HEAD
 		auxiliar->isLeftVerified = true;
 		i++;
 		depth++;
@@ -32,6 +45,13 @@ void runStraightLeft()
 void runRight()
 {
 	
+=======
+		i++;
+	}
+}
+void runStraightRight()
+{
+>>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 	while(auxiliar->right != NULL)
 	{
 		auxiliar = auxiliar->right;
@@ -41,6 +61,7 @@ void runRight()
 		{
 			runStraightLeft();
 		}
+<<<<<<< HEAD
 		else
 		{
 			auxiliar->isRightVerified = true;
@@ -77,6 +98,50 @@ void preOrder()
 		
 	}
 }
+=======
+	}
+}
+void runLeft()
+{
+	auxiliar = first;
+	struct Number *aux;
+	
+	
+	runStraightLeft();
+	for(;;)
+	{
+		if(auxiliar->right!=NULL)
+		{
+			runStraightRight();
+		}
+		if(auxiliar->up==NULL)
+		{
+			break;
+		}
+	}
+	
+}
+//void runRight()
+//{
+//	auxiliar = first;
+//	while(auxiliar->right != NULL)
+//	{
+//		preVector[i] = auxiliar->number;
+//		auxiliar = auxiliar->right;
+//		i++;
+//	}
+//	while(auxiliar->up != NULL)
+//	{
+//		while(auxiliar->left != NULL)
+//		{
+//			auxiliar = auxiliar->left;
+//			preVector[i] = auxiliar->number;
+//			i++;
+//		}
+//		auxiliar = auxiliar->up;
+//	}
+//}
+>>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 void clear()
 {
 	system("pause");
@@ -339,15 +404,25 @@ int main()
 		}
 		else if(option==3)
 		{
+<<<<<<< HEAD
 			preOrder();
+=======
+			runLeft();
+>>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 			for(i=0;i<50;i++)
 			{
 				if(preVector[i]!=0)
 				{
 					printf("%d\t",preVector[i]);	
 				}
+<<<<<<< HEAD
 			}
 			printf("\n\n\n %d \n\n\n",teste);
+=======
+				
+			}
+			printf("\n\n\n");
+>>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 			
 		}
 		else
