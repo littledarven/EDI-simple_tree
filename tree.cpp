@@ -2,12 +2,12 @@
 #include <stdlib.h>
 struct Number
 {
+	int number;
 	struct Number *up;
 	struct Number *left;
 	struct Number *right;
 	bool isLeftVerified;
-	bool isRightVerified;
-	int number;
+	bool isRightVerified;   	
 };
 struct Number *first = NULL;
 struct Number *auxiliar;
@@ -15,43 +15,24 @@ struct Number *delete_Element;
 int num_Numbers = 0;
 int preVector[50];
 int i = 0;
-<<<<<<< HEAD
 int depth;
-int teste;
+int depthCounter;
+int unbalanceCounter;
+int totalUnbalance;
 void runStraightLeft()
-
-=======
-bool rightRunChecker;
-//void deepChecker()
-//{
-//	while()
-//	{
-//		
-//	}
-//}
-void runStraightLeft()
->>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 {
 	while(auxiliar->left != NULL)
 	{
 		auxiliar = auxiliar->left;
 		preVector[i] = auxiliar->number;
-<<<<<<< HEAD
 		auxiliar->isLeftVerified = true;
 		i++;
-		depth++;
-	}
-}
-void runRight()
-{
-	
-=======
-		i++;
+		depthCounter++;
+		unbalanceCounter++;
 	}
 }
 void runStraightRight()
 {
->>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 	while(auxiliar->right != NULL)
 	{
 		auxiliar = auxiliar->right;
@@ -59,14 +40,15 @@ void runStraightRight()
 		i++;
 		if(auxiliar->left!=NULL)
 		{
+			unbalanceCounter--;
 			runStraightLeft();
 		}
-<<<<<<< HEAD
 		else
 		{
+			unbalanceCounter++;
 			auxiliar->isRightVerified = true;
 		}
-		depth++;
+		depthCounter++;
 	}
 }
 void preOrder()
@@ -79,69 +61,26 @@ void preOrder()
 	{
 		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
 		{
-			depth++;
+			depthCounter++;
 			auxiliar->isRightVerified = true;
-			runRight();
-		}
-		auxiliar = auxiliar->up;
-		depth--;
-		if(auxiliar->up==NULL && auxiliar->isRightVerified==false)
-		{
-			auxiliar->isRightVerified = true;
-			depth = 0;
-			runRight();
-		}
-		if(depth>teste)
-		{
-			teste = depth;
-		}
-		
-	}
-}
-=======
-	}
-}
-void runLeft()
-{
-	auxiliar = first;
-	struct Number *aux;
-	
-	
-	runStraightLeft();
-	for(;;)
-	{
-		if(auxiliar->right!=NULL)
-		{
 			runStraightRight();
 		}
-		if(auxiliar->up==NULL)
+		auxiliar = auxiliar->up;
+		depthCounter--;
+		if(auxiliar->up==NULL && auxiliar->isRightVerified==false)
 		{
-			break;
+			totalUnbalance = unbalanceCounter;
+			auxiliar->isRightVerified = true;
+			depthCounter = 0;
+			runStraightRight();
+		}
+		if(depthCounter>depth)
+		{
+			depth = depthCounter;
 		}
 	}
-	
+	depth--;
 }
-//void runRight()
-//{
-//	auxiliar = first;
-//	while(auxiliar->right != NULL)
-//	{
-//		preVector[i] = auxiliar->number;
-//		auxiliar = auxiliar->right;
-//		i++;
-//	}
-//	while(auxiliar->up != NULL)
-//	{
-//		while(auxiliar->left != NULL)
-//		{
-//			auxiliar = auxiliar->left;
-//			preVector[i] = auxiliar->number;
-//			i++;
-//		}
-//		auxiliar = auxiliar->up;
-//	}
-//}
->>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
 void clear()
 {
 	system("pause");
@@ -318,6 +257,7 @@ void insert(int number)
 	{
 		new_Element->number = number;
 		auxiliar = first;
+
 		while(7)
 		{
 			if(new_Element->number > auxiliar->number)
@@ -328,9 +268,8 @@ void insert(int number)
 					new_Element->right = NULL;
 					new_Element->left = NULL;
 					new_Element->isLeftVerified = false;
-					new_Element->isRightVerified = false;
+			  		new_Element->isRightVerified = false;
 					auxiliar->right = new_Element;
-					
 
 					break;
 				}
@@ -404,25 +343,17 @@ int main()
 		}
 		else if(option==3)
 		{
-<<<<<<< HEAD
 			preOrder();
-=======
-			runLeft();
->>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
+			printf("Arvore em pre ordem: \n\n");
 			for(i=0;i<50;i++)
 			{
 				if(preVector[i]!=0)
 				{
 					printf("%d\t",preVector[i]);	
 				}
-<<<<<<< HEAD
-			}
-			printf("\n\n\n %d \n\n\n",teste);
-=======
 				
 			}
-			printf("\n\n\n");
->>>>>>> 67ac3b7fa88eafdc213b13fb7b83792abd45b288
+			printf("\n-----------------------------------------------------------------------------------------\n\n\nProfunidade da arvore: %d \nQuanto a arvore esta desbalanceada: %d\n\n",depth, unbalanceCounter);
 			
 		}
 		else
