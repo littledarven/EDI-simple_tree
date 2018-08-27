@@ -24,11 +24,17 @@ void runStraightLeft()
 	while(auxiliar->left != NULL)
 	{
 		auxiliar = auxiliar->left;
-		preVector[i] = auxiliar->number;
+		if(i==1)
+		{
+			printf("%d  ",auxiliar->number);
+		}
 		auxiliar->isLeftVerified = true;
-		i++;
 		depthCounter++;
 		unbalanceCounter++;
+	}
+	if(i==0 && auxiliar->right==NULL)
+	{
+		printf("%d  ",auxiliar->number);
 	}
 }
 void runStraightRight()
@@ -36,10 +42,16 @@ void runStraightRight()
 	while(auxiliar->right != NULL)
 	{
 		auxiliar = auxiliar->right;
-		preVector[i] = auxiliar->number;
-		i++;
+		if(i==1)
+		{
+			printf("%d",auxiliar->number);
+		}
 		if(auxiliar->left!=NULL)
 		{
+			if(auxiliar->right==NULL)
+			{
+				auxiliar->isRightVerified = true;
+			}
 			unbalanceCounter--;
 			runStraightLeft();
 		}
@@ -51,11 +63,49 @@ void runStraightRight()
 		depthCounter++;
 	}
 }
+void posOrder()
+{
+	i = 0;
+	auxiliar = first;
+	runStraightLeft();
+	while(7)
+	{
+		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
+		{
+			auxiliar->isRightVerified = true;
+			auxiliar = auxiliar->right;
+			if(auxiliar->left!=NULL)
+			{
+				auxiliar->isLeftVerified=true;
+				runStraightLeft();
+			}
+			else if(auxiliar->right!=NULL)
+			{
+				auxiliar->isRightVerified=true;
+				runStraightRight();
+			}
+			else
+			{
+				printf("%d  ",auxiliar->number);
+			}
+		}
+
+		auxiliar = auxiliar->up;
+		if(auxiliar->isRightVerified==true)
+		{
+			printf("%d  ",auxiliar->number);
+		}
+		if(auxiliar->up==NULL && auxiliar->isRightVerified==true)
+		{
+			break;
+		}
+	}
+}
 void preOrder()
 {
+	i = 1;
 	auxiliar = first;
-	preVector[i] = auxiliar->number;
-	i++;
+	printf("%d  ",auxiliar->number);
 	runStraightLeft();
 	while(auxiliar->up!=NULL)
 	{
@@ -80,6 +130,47 @@ void preOrder()
 		}
 	}
 	depth--;
+}
+void inOrder()
+{
+	i = 0;
+	auxiliar = first;
+	runStraightLeft();
+	while(7)
+	{
+		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
+		{
+			auxiliar->isRightVerified = true;
+			auxiliar = auxiliar->right;
+			if(auxiliar->left!=NULL)
+			{
+				auxiliar->isLeftVerified=true;
+				runStraightLeft();
+			}
+			else if(auxiliar->right!=NULL)
+			{
+				auxiliar->isRightVerified=true;
+				printf("%d  ",auxiliar->number);
+				runStraightRight();
+			}
+			else
+			{
+				printf("%d  ",auxiliar->number);
+			}
+		}
+		
+		auxiliar = auxiliar->up;
+		if(auxiliar->isRightVerified==false)
+		{
+			
+			printf("%d  ",auxiliar->number);
+		}
+		if(auxiliar->up==NULL && auxiliar->isRightVerified==true)
+		{
+			break;
+		}
+		
+	}
 }
 void clear()
 {
@@ -136,7 +227,6 @@ void deleteOneNode()
 		}
 	}
 }
-
 void deleteDoubleNode()
 {	
 	delete_Element = auxiliar->left;
@@ -309,6 +399,14 @@ int main()
 	insert(27);
 	insert(37);
 	insert(34);	
+	insert(60);
+	insert(100);
+	insert(80);
+	insert(45);
+	insert(43);
+	insert(42);
+	insert(41);
+	insert(47);
 	int number;
 	int option;
 	while(7)
@@ -355,6 +453,14 @@ int main()
 			}
 			printf("\n-----------------------------------------------------------------------------------------\n\n\nProfunidade da arvore: %d \nQuanto a arvore esta desbalanceada: %d\n\n",depth, unbalanceCounter);
 			
+		}
+		else if(option==4)
+		{
+			inOrder();
+		}
+		else if(option==5)
+		{
+			posOrder();
 		}
 		else
 		{
