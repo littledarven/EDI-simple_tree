@@ -41,10 +41,11 @@ void runStraightRight()
 {
 	while(auxiliar->right != NULL)
 	{
+		
 		auxiliar = auxiliar->right;
 		if(i==1)
 		{
-			printf("%d",auxiliar->number);
+			printf("%d  ",auxiliar->number);
 		}
 		if(auxiliar->left!=NULL)
 		{
@@ -89,7 +90,8 @@ void posOrder()
 				printf("%d  ",auxiliar->number);
 			}
 		}
-
+		auxiliar->isLeftVerified = false;
+		auxiliar->isRightVerified = false;
 		auxiliar = auxiliar->up;
 		if(auxiliar->isRightVerified==true)
 		{
@@ -115,6 +117,8 @@ void preOrder()
 			auxiliar->isRightVerified = true;
 			runStraightRight();
 		}
+		auxiliar->isLeftVerified = false;
+		auxiliar->isRightVerified = false;
 		auxiliar = auxiliar->up;
 		depthCounter--;
 		if(auxiliar->up==NULL && auxiliar->isRightVerified==false)
@@ -128,6 +132,7 @@ void preOrder()
 		{
 			depth = depthCounter;
 		}
+
 	}
 	depth--;
 }
@@ -136,6 +141,7 @@ void inOrder()
 	i = 0;
 	auxiliar = first;
 	runStraightLeft();
+	printf("%d  ",auxiliar->number);
 	while(7)
 	{
 		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
@@ -158,11 +164,11 @@ void inOrder()
 				printf("%d  ",auxiliar->number);
 			}
 		}
-		
+		auxiliar->isLeftVerified = false;
+		auxiliar->isRightVerified = false;
 		auxiliar = auxiliar->up;
 		if(auxiliar->isRightVerified==false)
 		{
-			
 			printf("%d  ",auxiliar->number);
 		}
 		if(auxiliar->up==NULL && auxiliar->isRightVerified==true)
@@ -288,7 +294,6 @@ void show()
 				auxiliar = auxiliar->up;
 				system("cls");
 			}
-
 		}
 		else if(option == 3)
 		{
@@ -302,7 +307,6 @@ void show()
 				auxiliar = auxiliar->right;
 				system("cls");
 			}
-
 		}
 		else if(option == 4)
 		{
@@ -378,7 +382,6 @@ void insert(int number)
 					new_Element->isLeftVerified = false;
 					new_Element->isRightVerified = false;
 					auxiliar->left = new_Element;
-
 					break;
 				}
 				else
@@ -414,7 +417,8 @@ int main()
 		printf("1 - INSERIR VALOR \n");
 		printf("2 - NAVEGAR NA ARVORE \n");
 		printf("3 - PRE-ORDER\n");
-		printf("4 - SAIR\n");
+		printf("4 - IN ORDER\n");
+		printf("5 - POS ORDEM\n");
 		printf("Escolha uma opcao: ");
 		scanf("%d", &option);
 		if(option == 1)
@@ -442,17 +446,8 @@ int main()
 		else if(option==3)
 		{
 			preOrder();
-			printf("Arvore em pre ordem: \n\n");
-			for(i=0;i<50;i++)
-			{
-				if(preVector[i]!=0)
-				{
-					printf("%d\t",preVector[i]);	
-				}
-				
-			}
+
 			printf("\n-----------------------------------------------------------------------------------------\n\n\nProfunidade da arvore: %d \nQuanto a arvore esta desbalanceada: %d\n\n",depth, unbalanceCounter);
-			
 		}
 		else if(option==4)
 		{
