@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 struct Number
 {
 	int number;
@@ -9,16 +10,15 @@ struct Number
 	bool isLeftVerified;
 	bool isRightVerified;   	
 };
+
 struct Number *first = NULL;
 struct Number *auxiliar;
 struct Number *delete_Element;
-int num_Numbers = 0;
-int preVector[50];
 int i = 0;
 int depth;
 int depthCounter;
 int unbalanceCounter;
-int totalUnbalance;
+
 void runStraightLeft()
 {
 	while(auxiliar->left != NULL)
@@ -35,14 +35,15 @@ void runStraightLeft()
 	if(i==0 && auxiliar->right==NULL)
 	{
 		printf("%d  ",auxiliar->number);
+		
 	}
 }
 void runStraightRight()
 {
 	while(auxiliar->right != NULL)
 	{
-		
 		auxiliar = auxiliar->right;
+		depthCounter++;
 		if(i==1)
 		{
 			printf("%d  ",auxiliar->number);
@@ -58,10 +59,12 @@ void runStraightRight()
 		}
 		else
 		{
-			unbalanceCounter++;
 			auxiliar->isRightVerified = true;
 		}
-		depthCounter++;
+	}
+	if(depthCounter > depth)
+	{
+		depth = depthCounter;
 	}
 }
 void posOrder()
@@ -90,6 +93,10 @@ void posOrder()
 				printf("%d  ",auxiliar->number);
 			}
 		}
+		else if(auxiliar->right == NULL)
+		{
+			printf("%d  ",auxiliar->number);
+		}
 		auxiliar->isLeftVerified = false;
 		auxiliar->isRightVerified = false;
 		auxiliar = auxiliar->up;
@@ -97,8 +104,10 @@ void posOrder()
 		{
 			printf("%d  ",auxiliar->number);
 		}
-		if(auxiliar->up==NULL && auxiliar->isRightVerified==true)
+		if((auxiliar->up==NULL && auxiliar->isRightVerified==true) || (auxiliar->up == NULL && auxiliar->right == NULL))
 		{
+			auxiliar->isLeftVerified = false;
+			auxiliar->isRightVerified = false;
 			break;
 		}
 	}
@@ -106,14 +115,16 @@ void posOrder()
 void preOrder()
 {
 	i = 1;
+	depth = 0;
+	depthCounter = 0;
+	unbalanceCounter = 0;
 	auxiliar = first;
 	printf("%d  ",auxiliar->number);
 	runStraightLeft();
-	while(auxiliar->up!=NULL)
+	while(7)
 	{
 		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
 		{
-			depthCounter++;
 			auxiliar->isRightVerified = true;
 			runStraightRight();
 		}
@@ -121,24 +132,36 @@ void preOrder()
 		auxiliar->isRightVerified = false;
 		auxiliar = auxiliar->up;
 		depthCounter--;
-		if(auxiliar->up==NULL && auxiliar->isRightVerified==false)
+		if(auxiliar->up==NULL && auxiliar->isRightVerified==false && auxiliar->right != NULL)
 		{
-			totalUnbalance = unbalanceCounter;
+			if(depthCounter > depth)
+			{
+				depth = depthCounter;
+			}
 			auxiliar->isRightVerified = true;
 			depthCounter = 0;
 			runStraightRight();
 		}
-		if(depthCounter>depth)
+		else if((auxiliar->up==NULL && auxiliar->isRightVerified==true) || (auxiliar->up == NULL && auxiliar->right == NULL))
 		{
-			depth = depthCounter;
+			auxiliar->isLeftVerified = false;
+			auxiliar->isRightVerified = false;
+			break;
 		}
-
 	}
-	depth--;
+	if(depthCounter>depth)
+	{
+		depth = depthCounter;
+	}
+	depth++;
+
 }
 void inOrder()
 {
 	i = 0;
+	depth = 0;
+	depthCounter = 0;
+	unbalanceCounter = 0;
 	auxiliar = first;
 	runStraightLeft();
 	printf("%d  ",auxiliar->number);
@@ -146,17 +169,20 @@ void inOrder()
 	{
 		if(auxiliar->right!=NULL && auxiliar->isRightVerified==false)
 		{
+			depthCounter++;
 			auxiliar->isRightVerified = true;
 			auxiliar = auxiliar->right;
 			if(auxiliar->left!=NULL)
 			{
 				auxiliar->isLeftVerified=true;
+				depthCounter++;
 				runStraightLeft();
 			}
 			else if(auxiliar->right!=NULL)
 			{
 				auxiliar->isRightVerified=true;
 				printf("%d  ",auxiliar->number);
+				depthCounter++;
 				runStraightRight();
 			}
 			else
@@ -171,11 +197,17 @@ void inOrder()
 		{
 			printf("%d  ",auxiliar->number);
 		}
-		if(auxiliar->up==NULL && auxiliar->isRightVerified==true)
+		
+		if((auxiliar->up==NULL && auxiliar->isRightVerified==true) || (auxiliar->up == NULL && auxiliar->right == NULL))
 		{
+			auxiliar->isLeftVerified = false;
+			auxiliar->isRightVerified = false;
 			break;
 		}
-		
+	}
+	if(depthCounter>depth)
+	{
+		depth = depthCounter;
 	}
 }
 void clear()
@@ -239,7 +271,6 @@ void deleteDoubleNode()
 	while(delete_Element->right!=NULL)
 	{
 		delete_Element = delete_Element->right;
-		   
 	}
 	auxiliar->number = delete_Element->number;
 	if(delete_Element->up==auxiliar && delete_Element->left!=NULL)
@@ -400,16 +431,7 @@ int main()
 	insert(35);
 	insert(20);
 	insert(27);
-	insert(37);
-	insert(34);	
-	insert(60);
-	insert(100);
-	insert(80);
-	insert(45);
-	insert(43);
-	insert(42);
-	insert(41);
-	insert(47);
+
 	int number;
 	int option;
 	while(7)
@@ -419,6 +441,7 @@ int main()
 		printf("3 - PRE-ORDER\n");
 		printf("4 - IN ORDER\n");
 		printf("5 - POS ORDEM\n");
+		printf("6 -   SAIR \n");
 		printf("Escolha uma opcao: ");
 		scanf("%d", &option);
 		if(option == 1)
@@ -441,21 +464,24 @@ int main()
 				show();
 				clear();					
 			}
-
 		}
 		else if(option==3)
 		{
 			preOrder();
-
-			printf("\n-----------------------------------------------------------------------------------------\n\n\nProfunidade da arvore: %d \nQuanto a arvore esta desbalanceada: %d\n\n",depth, unbalanceCounter);
+			printf("\n\n\nProfundidade: %d\n Quanto a arvore esta desbalanceada; %d\n\n", depth, unbalanceCounter);
+			clear();
 		}
 		else if(option==4)
 		{
 			inOrder();
+			printf("\n\n\nProfundidade: %d\n Quanto a arvore esta desbalanceada; %d\n\n", depth, unbalanceCounter);
+			clear();
 		}
 		else if(option==5)
 		{
 			posOrder();
+			printf("\n\n\nProfundidade: %d\n Quanto a arvore esta desbalanceada; %d\n\n", depth, unbalanceCounter);
+			clear();
 		}
 		else
 		{
@@ -463,5 +489,4 @@ int main()
 			break;
 		}
 	}
-
 }
